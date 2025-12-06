@@ -3,11 +3,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RankList</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>RankList – Create and Compare Rankings</title>
+  <meta name="description" content="Create ranked lists, share them with friends, and see how your opinions compare.">
+  <meta property="og:title" content="RankList – Create and Compare Rankings">
+  <meta property="og:description" content="Create ranked lists, share them with friends, and see how your opinions compare.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -16,83 +22,128 @@
     }
 
 ```
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .app {
   min-height: 100vh;
-  background: #FAFAF8;
-  font-family: 'DM Sans', sans-serif;
-  color: #1a1a1a;
-  padding: 40px 20px;
+  background: #fff;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #000;
+  padding: 0 20px 40px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  margin-bottom: 40px;
+}
+
+.header-logo {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: #000;
+  text-decoration: none;
+  letter-spacing: -0.5px;
+}
+
+.header-new {
+  font-size: 13px;
+  font-weight: 500;
+  color: #000;
+  text-decoration: none;
+  padding: 10px 16px;
+  border: 1px solid #000;
+  border-radius: 100px;
+  transition: all 0.2s ease;
+}
+
+.header-new:hover {
+  background: #000;
+  color: #fff;
 }
 
 .view-container {
-  max-width: 480px;
+  max-width: 460px;
   margin: 0 auto;
 }
 
 .view-container.wide {
-  max-width: 720px;
+  max-width: 680px;
 }
 
 .main-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 32px;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 42px;
   font-weight: 400;
-  margin-bottom: 8px;
-  letter-spacing: -0.5px;
+  margin-bottom: 12px;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
 }
 
 .subtitle {
   color: #666;
   font-size: 15px;
-  margin-bottom: 32px;
+  margin-bottom: 48px;
+  letter-spacing: -0.2px;
 }
 
 .form-section {
-  margin-bottom: 28px;
+  margin-bottom: 32px;
 }
 
 .label {
   display: block;
-  font-weight: 600;
-  font-size: 13px;
+  font-weight: 500;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #444;
-  margin-bottom: 8px;
+  letter-spacing: 1px;
+  color: #999;
+  margin-bottom: 10px;
 }
 
 .hint {
   font-size: 13px;
-  color: #888;
-  margin-bottom: 12px;
+  color: #999;
+  margin-bottom: 14px;
 }
 
 .input-field {
   width: 100%;
-  padding: 14px 16px;
-  font-size: 16px;
+  padding: 16px 0;
+  font-size: 17px;
   font-family: inherit;
-  border: 2px solid #e5e5e5;
-  border-radius: 8px;
-  background: white;
-  transition: border-color 0.15s;
+  border: none;
+  border-bottom: 1.5px solid #e0e0e0;
+  background: transparent;
+  transition: border-color 0.2s;
+  letter-spacing: -0.2px;
 }
 
 .input-field:focus {
   outline: none;
-  border-color: #1a1a1a;
+  border-color: #000;
+}
+
+.input-field::placeholder {
+  color: #ccc;
 }
 
 .items-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 0;
+  margin-bottom: 16px;
 }
 
 .item-row {
   display: flex;
   gap: 8px;
+  align-items: center;
 }
 
 .item-input {
@@ -100,168 +151,190 @@
 }
 
 .btn-remove {
-  width: 48px;
-  border: 2px solid #e5e5e5;
-  border-radius: 8px;
-  background: white;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 100px;
+  background: transparent;
   font-size: 20px;
-  color: #999;
+  color: #ccc;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-remove:hover {
-  border-color: #ff4444;
-  color: #ff4444;
+  background: #fee;
+  color: #e00;
 }
 
 .btn-primary {
   width: 100%;
-  padding: 16px 24px;
-  font-size: 16px;
-  font-weight: 600;
+  padding: 18px 24px;
+  font-size: 15px;
+  font-weight: 500;
   font-family: inherit;
-  background: #1a1a1a;
-  color: white;
+  background: #000;
+  color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 100px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+  letter-spacing: -0.2px;
 }
 
 .btn-primary:hover {
-  background: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
 }
 
 .btn-primary.disabled {
-  background: #ccc;
+  background: #e0e0e0;
+  color: #999;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .btn-secondary {
   width: 100%;
-  padding: 14px 24px;
+  padding: 16px 24px;
   font-size: 15px;
   font-weight: 500;
   font-family: inherit;
-  background: white;
-  color: #1a1a1a;
-  border: 2px solid #e5e5e5;
-  border-radius: 8px;
+  background: transparent;
+  color: #000;
+  border: 1px solid #e0e0e0;
+  border-radius: 100px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+  letter-spacing: -0.2px;
 }
 
 .btn-secondary:hover {
-  border-color: #1a1a1a;
+  border-color: #000;
 }
 
 .action-group {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: 24px;
+  margin-top: 32px;
 }
 
 .compare-header-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .compare-progress-text {
-  font-weight: 600;
-  font-size: 14px;
-  color: #666;
+  font-weight: 500;
+  font-size: 13px;
+  color: #999;
+  letter-spacing: -0.2px;
 }
 
 .compare-count {
   font-size: 13px;
-  color: #999;
+  color: #ccc;
+  font-variant-numeric: tabular-nums;
 }
 
 .progress-bar {
-  height: 4px;
-  background: #e5e5e5;
-  border-radius: 2px;
-  margin-bottom: 48px;
+  height: 2px;
+  background: #f0f0f0;
+  border-radius: 100px;
+  margin-bottom: 64px;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: #1a1a1a;
-  border-radius: 2px;
-  transition: width 0.3s ease;
+  background: #000;
+  border-radius: 100px;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .compare-question {
-  font-family: 'DM Serif Display', serif;
-  font-size: 28px;
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 32px;
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 40px;
+  letter-spacing: -1px;
 }
 
 .choice-container {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
   align-items: center;
   margin-bottom: 48px;
 }
 
 .choice-btn {
   width: 100%;
-  padding: 24px 20px;
-  font-size: 18px;
+  padding: 28px 24px;
+  font-size: 17px;
   font-weight: 500;
   font-family: inherit;
-  background: white;
-  color: #1a1a1a;
-  border: 2px solid #e5e5e5;
-  border-radius: 12px;
+  background: #fff;
+  color: #000;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 16px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   text-align: center;
   line-height: 1.3;
+  touch-action: manipulation;
+  letter-spacing: -0.3px;
 }
 
 .choice-btn:hover {
-  border-color: #1a1a1a;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-color: #000;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.1);
 }
 
 .choice-btn:active {
-  transform: translateY(0);
+  transform: scale(0.98);
+  box-shadow: none;
 }
 
 .choice-vs {
-  font-size: 14px;
-  color: #999;
+  font-size: 12px;
+  color: #ccc;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  padding: 8px 0;
 }
 
 .compare-hint {
   text-align: center;
   font-size: 13px;
-  color: #999;
+  color: #ccc;
 }
 
 .result-list {
-  background: white;
-  border: 2px solid #e5e5e5;
-  border-radius: 12px;
-  padding: 8px;
+  border: 1px solid #f0f0f0;
+  border-radius: 16px;
+  overflow: hidden;
 }
 
 .result-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 12px;
+  gap: 16px;
+  padding: 18px 20px;
   border-bottom: 1px solid #f0f0f0;
 }
 
@@ -275,43 +348,47 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #1a1a1a;
-  color: white;
-  font-size: 13px;
+  background: #000;
+  color: #fff;
+  font-size: 12px;
   font-weight: 600;
-  border-radius: 6px;
+  border-radius: 8px;
+  font-variant-numeric: tabular-nums;
 }
 
 .result-text {
   font-size: 15px;
+  letter-spacing: -0.2px;
 }
 
 .compare-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .compare-names {
-  font-weight: 600;
-  font-size: 15px;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: -0.2px;
 }
 
 .similarity-badge {
-  background: #1a1a1a;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 14px;
+  background: #000;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 100px;
+  font-size: 13px;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 .compare-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 @media (max-width: 600px) {
@@ -321,18 +398,19 @@
 }
 
 .compare-column {
-  background: white;
-  border: 2px solid #e5e5e5;
-  border-radius: 12px;
-  padding: 16px 12px;
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 16px;
+  padding: 20px 16px;
 }
 
 .compare-column-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  margin-bottom: 12px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+  letter-spacing: -0.2px;
 }
 
 .compare-item {
@@ -340,12 +418,12 @@
   align-items: center;
   gap: 10px;
   padding: 10px 8px;
-  border-radius: 6px;
-  transition: background 0.15s;
+  border-radius: 8px;
+  transition: background 0.2s;
 }
 
 .compare-item.divergent {
-  background: #fff7ed;
+  background: #fffbeb;
 }
 
 .compare-item.extreme-diff {
@@ -353,96 +431,99 @@
 }
 
 .compare-number {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #e5e5e5;
-  font-size: 12px;
+  background: #f0f0f0;
+  font-size: 11px;
   font-weight: 600;
-  border-radius: 4px;
+  border-radius: 6px;
   flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
 }
 
 .compare-text {
   flex: 1;
   font-size: 14px;
+  letter-spacing: -0.2px;
 }
 
 .diff-badge {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
-  color: #f97316;
-  background: #ffedd5;
-  padding: 2px 6px;
-  border-radius: 4px;
+  color: #f59e0b;
+  background: #fef3c7;
+  padding: 3px 7px;
+  border-radius: 100px;
+  font-variant-numeric: tabular-nums;
 }
 
 .success-icon {
-  width: 64px;
-  height: 64px;
-  background: #22c55e;
-  color: white;
-  font-size: 32px;
-  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  background: #000;
+  color: #fff;
+  font-size: 24px;
+  border-radius: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 20px;
+  margin: 0 auto 24px;
 }
 
 .url-display {
-  background: white;
-  border: 2px solid #e5e5e5;
-  border-radius: 8px;
-  padding: 14px 16px;
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 16px 18px;
   margin-bottom: 8px;
   overflow: hidden;
 }
 
 .url-display code {
-  font-family: 'SF Mono', Monaco, monospace;
-  font-size: 13px;
-  color: #666;
+  font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+  font-size: 12px;
+  color: #999;
 }
 
 .auto-compare-prompt {
-  background: white;
-  border: 2px solid #e5e5e5;
-  border-radius: 12px;
-  padding: 24px;
+  background: #fafafa;
+  border-radius: 20px;
+  padding: 32px;
   text-align: center;
   margin-bottom: 16px;
 }
 
 .compare-tease {
   font-size: 18px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
+  letter-spacing: -0.3px;
 }
 
 .compare-tease strong {
-  color: #1a1a1a;
+  color: #000;
 }
 
 .copied-toast {
   position: fixed;
   bottom: 24px;
   left: 50%;
-  transform: translateX(-50%);
-  background: #1a1a1a;
-  color: white;
-  padding: 12px 24px;
-  border-radius: 8px;
+  transform: translateX(-50%) translateY(20px);
+  background: #000;
+  color: #fff;
+  padding: 14px 24px;
+  border-radius: 100px;
   font-size: 14px;
   font-weight: 500;
   opacity: 0;
-  transition: opacity 0.2s;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
 }
 
 .copied-toast.show {
   opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 ```
 
@@ -501,6 +582,26 @@
         total += Math.ceil(Math.log2(i + 1));
       }
       return total;
+    };
+
+    const Header = ({ showNew }) => {
+      const goHome = () => {
+        window.location.hash = '';
+        window.location.reload();
+      };
+
+      return (
+        <header className="header">
+          <a href="#" className="header-logo" onClick={(e) => { e.preventDefault(); goHome(); }}>
+            RankList
+          </a>
+          {showNew && (
+            <a href="#" className="header-new" onClick={(e) => { e.preventDefault(); goHome(); }}>
+              + New List
+            </a>
+          )}
+        </header>
+      );
     };
 
     // Views
@@ -934,8 +1035,11 @@
         }
       };
 
+      const showNewButton = view !== 'create';
+
       return (
         <div className="app">
+          <Header showNew={showNewButton} />
           {view === 'create' && <CreateTemplate onComplete={handleTemplateCreated} />}
           {view === 'templateCreated' && <TemplateCreated template={template} onShare={handleShare} />}
           {view === 'rank' && <RankItems template={template} onComplete={handleRankComplete} />}
