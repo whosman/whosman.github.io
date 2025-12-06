@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RankList</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+```
+.app {
+  min-height: 100vh;
+  background: #FAFAF8;
+  font-family: 'DM Sans', sans-serif;
+  color: #1a1a1a;
+  padding: 40px 20px;
+}
+
+.view-container {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.view-container.wide {
+  max-width: 720px;
+}
+
+.main-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 32px;
+  font-weight: 400;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 15px;
+  margin-bottom: 32px;
+}
+
+.form-section {
+  margin-bottom: 28px;
+}
+
+.label {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.hint {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 12px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 16px;
+  font-family: inherit;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
+  background: white;
+  transition: border-color 0.15s;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #1a1a1a;
+}
+
+.items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.item-row {
+  display: flex;
+  gap: 8px;
+}
+
+.item-input {
+  flex: 1;
+}
+
+.btn-remove {
+  width: 48px;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
+  background: white;
+  font-size: 20px;
+  color: #999;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-remove:hover {
+  border-color: #ff4444;
+  color: #ff4444;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 16px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  background: #1a1a1a;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-primary:hover {
+  background: #333;
+}
+
+.btn-primary.disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  width: 100%;
+  padding: 14px 24px;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: inherit;
+  background: white;
+  color: #1a1a1a;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.btn-secondary:hover {
+  border-color: #1a1a1a;
+}
+
+.action-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.compare-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.compare-progress-text {
+  font-weight: 600;
+  font-size: 14px;
+  color: #666;
+}
+
+.compare-count {
+  font-size: 13px;
+  color: #999;
+}
+
+.progress-bar {
+  height: 4px;
+  background: #e5e5e5;
+  border-radius: 2px;
+  margin-bottom: 48px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #1a1a1a;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.compare-question {
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.choice-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 48px;
+}
+
+.choice-btn {
+  width: 100%;
+  padding: 24px 20px;
+  font-size: 18px;
+  font-weight: 500;
+  font-family: inherit;
+  background: white;
+  color: #1a1a1a;
+  border: 2px solid #e5e5e5;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.choice-btn:hover {
+  border-color: #1a1a1a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.choice-btn:active {
+  transform: translateY(0);
+}
+
+.choice-vs {
+  font-size: 14px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.compare-hint {
+  text-align: center;
+  font-size: 13px;
+  color: #999;
+}
+
+.result-list {
+  background: white;
+  border: 2px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 8px;
+}
+
+.result-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.result-item:last-child {
+  border-bottom: none;
+}
+
+.result-number {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1a1a1a;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.result-text {
+  font-size: 15px;
+}
+
+.compare-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.compare-names {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.similarity-badge {
+  background: #1a1a1a;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 600px) {
+  .compare-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.compare-column {
+  background: white;
+  border: 2px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 16px 12px;
+}
+
+.compare-column-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.compare-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 8px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.compare-item.divergent {
+  background: #fff7ed;
+}
+
+.compare-item.extreme-diff {
+  background: #fef2f2;
+}
+
+.compare-number {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e5e5e5;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.compare-text {
+  flex: 1;
+  font-size: 14px;
+}
+
+.diff-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: #f97316;
+  background: #ffedd5;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.success-icon {
+  width: 64px;
+  height: 64px;
+  background: #22c55e;
+  color: white;
+  font-size: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.url-display {
+  background: white;
+  border: 2px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.url-display code {
+  font-family: 'SF Mono', Monaco, monospace;
+  font-size: 13px;
+  color: #666;
+}
+
+.auto-compare-prompt {
+  background: white;
+  border: 2px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.compare-tease {
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.compare-tease strong {
+  color: #1a1a1a;
+}
+
+.copied-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1a1a;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+.copied-toast.show {
+  opacity: 1;
+}
+```
+
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <div id="toast" class="copied-toast">Link copied!</div>
+
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    // URL encoding utilities
+    const encode = (obj) => btoa(encodeURIComponent(JSON.stringify(obj)));
+    const decode = (str) => {
+      try {
+        return JSON.parse(decodeURIComponent(atob(str)));
+      } catch {
+        return null;
+      }
+    };
+
+    const showToast = () => {
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    };
+
+    const copyToClipboard = (text) => {
+      navigator.clipboard.writeText(text);
+      showToast();
+    };
+
+    // Similarity calculation
+    const calculateSimilarity = (rank1, rank2) => {
+      if (!rank1 || !rank2 || rank1.length !== rank2.length) return null;
+      const n = rank1.length;
+      let sumDiffSq = 0;
+      rank1.forEach((item, i) => {
+        const j = rank2.indexOf(item);
+        if (j !== -1) sumDiffSq += Math.pow(i - j, 2);
+      });
+      const maxDiff = (n * (n * n - 1)) / 3;
+      return Math.round((1 - sumDiffSq / maxDiff) * 100);
+    };
+
+    const estimateComparisons = (n) => {
+      let total = 0;
+      for (let i = 1; i < n; i++) {
+        total += Math.ceil(Math.log2(i + 1));
+      }
+      return total;
+    };
+
+    // Views
+    const CreateTemplate = ({ onComplete }) => {
+      const [title, setTitle] = useState('');
+      const [items, setItems] = useState(['', '', '', '', '']);
+
+      const addItem = () => setItems([...items, '']);
+      const removeItem = (i) => items.length > 3 && setItems(items.filter((_, idx) => idx !== i));
+      const updateItem = (i, val) => {
+        const newItems = [...items];
+        newItems[i] = val;
+        setItems(newItems);
+      };
+
+      const create = () => {
+        const validItems = items.filter(i => i.trim());
+        if (validItems.length >= 3 && title.trim()) {
+          onComplete({ title: title.trim(), items: validItems });
+        }
+      };
+
+      const isValid = title.trim() && items.filter(i => i.trim()).length >= 3;
+
+      return (
+        <div className="view-container">
+          <h1 className="main-title">Create a Ranking</h1>
+          <p className="subtitle">Build a template others can rank and compare</p>
+          
+          <div className="form-section">
+            <label className="label">Title</label>
+            <input
+              type="text"
+              className="input-field"
+              placeholder="Best 90s Movies, Top Pizza Toppings..."
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              maxLength={60}
+            />
+          </div>
+
+          <div className="form-section">
+            <label className="label">Items to Rank</label>
+            <p className="hint">Minimum 3 items. Add items in any order.</p>
+            
+            <div className="items-list">
+              {items.map((item, i) => (
+                <div key={i} className="item-row">
+                  <input
+                    type="text"
+                    className="input-field item-input"
+                    placeholder={`Item ${i + 1}`}
+                    value={item}
+                    onChange={(e) => updateItem(i, e.target.value)}
+                    maxLength={50}
+                  />
+                  {items.length > 3 && (
+                    <button className="btn-remove" onClick={() => removeItem(i)}>×</button>
+                  )}
+                </div>
+              ))}
+            </div>
+            
+            <button className="btn-secondary" onClick={addItem}>+ Add Item</button>
+          </div>
+
+          <button 
+            className={`btn-primary ${!isValid ? 'disabled' : ''}`} 
+            onClick={create}
+            disabled={!isValid}
+          >
+            Create Template
+          </button>
+        </div>
+      );
+    };
+
+    const RankItems = ({ template, onComplete }) => {
+      const [phase, setPhase] = useState('name');
+      const [name, setName] = useState('');
+      const [ranked, setRanked] = useState([]);
+      const [toInsert, setToInsert] = useState([]);
+      const [currentItem, setCurrentItem] = useState(null);
+      const [searchState, setSearchState] = useState({ low: 0, high: 0 });
+      const [comparisons, setComparisons] = useState(0);
+
+      const startComparing = () => {
+        if (!name.trim()) return;
+        
+        const shuffled = [...template.items].sort(() => Math.random() - 0.5);
+        setRanked([shuffled[0]]);
+        setToInsert(shuffled.slice(1));
+        setCurrentItem(shuffled[1]);
+        setSearchState({ low: 0, high: 1 });
+        setPhase('compare');
+      };
+
+      const handleChoice = (preferCurrent) => {
+        const { low, high } = searchState;
+        const mid = Math.floor((low + high) / 2);
+        
+        let newLow = low;
+        let newHigh = high;
+        
+        if (preferCurrent) {
+          newHigh = mid;
+        } else {
+          newLow = mid + 1;
+        }
+        
+        setComparisons(c => c + 1);
+        
+        if (newLow >= newHigh) {
+          const newRanked = [...ranked];
+          newRanked.splice(newLow, 0, currentItem);
+          setRanked(newRanked);
+          
+          const remaining = toInsert.slice(1);
+          if (remaining.length === 0) {
+            setPhase('done');
+            onComplete({ name: name.trim(), ranking: newRanked });
+          } else {
+            setToInsert(remaining);
+            setCurrentItem(remaining[0]);
+            setSearchState({ low: 0, high: newRanked.length });
+          }
+        } else {
+          setSearchState({ low: newLow, high: newHigh });
+        }
+      };
+
+      const getMidItem = () => {
+        const mid = Math.floor((searchState.low + searchState.high) / 2);
+        return ranked[mid];
+      };
+
+      const progress = template.items.length > 1 
+        ? ((template.items.length - toInsert.length - 1) / (template.items.length - 1)) * 100
+        : 100;
+
+      if (phase === 'name') {
+        return (
+          <div className="view-container">
+            <h1 className="main-title">{template.title}</h1>
+            <p className="subtitle">~{estimateComparisons(template.items.length)} quick "which do you prefer?" questions</p>
+
+            <div className="form-section">
+              <label className="label">Your Name</label>
+              <input
+                type="text"
+                className="input-field"
+                placeholder="Enter your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && startComparing()}
+                maxLength={30}
+                autoFocus
+              />
+            </div>
+
+            <button 
+              className={`btn-primary ${!name.trim() ? 'disabled' : ''}`}
+              onClick={startComparing}
+              disabled={!name.trim()}
+            >
+              Start Ranking
+            </button>
+          </div>
+        );
+      }
+
+      if (phase === 'compare') {
+        const midItem = getMidItem();
+        
+        return (
+          <div className="view-container">
+            <div className="compare-header-bar">
+              <span className="compare-progress-text">{template.title}</span>
+              <span className="compare-count">{comparisons} answered</span>
+            </div>
+            
+            <div className="progress-bar">
+              <div className="progress-fill" style={{ width: `${progress}%` }} />
+            </div>
+
+            <p className="compare-question">Which do you prefer?</p>
+
+            <div className="choice-container">
+              <button className="choice-btn" onClick={() => handleChoice(true)}>
+                {currentItem}
+              </button>
+              
+              <span className="choice-vs">or</span>
+              
+              <button className="choice-btn" onClick={() => handleChoice(false)}>
+                {midItem}
+              </button>
+            </div>
+
+            <p className="compare-hint">Ranking {ranked.length + 1} of {template.items.length} items</p>
+          </div>
+        );
+      }
+
+      return null;
+    };
+
+    const ViewResult = ({ template, result, onRankSame }) => {
+      const resultUrl = `${window.location.origin}${window.location.pathname}#r/${encode({ t: template, r: result })}`;
+
+      return (
+        <div className="view-container">
+          <h1 className="main-title">{template.title}</h1>
+          <p className="subtitle">{result.name}'s ranking</p>
+
+          <div className="result-list">
+            {result.ranking.map((item, i) => (
+              <div key={item} className="result-item">
+                <span className="result-number">{i + 1}</span>
+                <span className="result-text">{item}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="action-group">
+            <button className="btn-primary" onClick={onRankSame}>
+              Rank This List
+            </button>
+            <button className="btn-secondary" onClick={() => copyToClipboard(resultUrl)}>
+              Copy Link
+            </button>
+          </div>
+        </div>
+      );
+    };
+
+    const CompareResults = ({ template, result1, result2, onRankSame }) => {
+      const similarity = calculateSimilarity(result1.ranking, result2.ranking);
+      const compareUrl = `${window.location.origin}${window.location.pathname}#c/${encode({ t: template, r1: result1, r2: result2 })}`;
+
+      const getPositionDiff = (item) => {
+        const pos1 = result1.ranking.indexOf(item);
+        const pos2 = result2.ranking.indexOf(item);
+        return Math.abs(pos1 - pos2);
+      };
+
+      return (
+        <div className="view-container wide">
+          <h1 className="main-title">{template.title}</h1>
+          <div className="compare-header">
+            <span className="compare-names">{result1.name} vs {result2.name}</span>
+            <span className="similarity-badge">{similarity}% similar</span>
+          </div>
+
+          <div className="compare-grid">
+            <div className="compare-column">
+              <h3 className="compare-column-title">{result1.name}</h3>
+              {result1.ranking.map((item, i) => {
+                const diff = getPositionDiff(item);
+                const isExtreme = i < 3 || i >= result1.ranking.length - 3;
+                return (
+                  <div 
+                    key={item} 
+                    className={`compare-item ${diff >= 5 ? 'divergent' : ''} ${isExtreme && diff >= 3 ? 'extreme-diff' : ''}`}
+                  >
+                    <span className="compare-number">{i + 1}</span>
+                    <span className="compare-text">{item}</span>
+                    {diff >= 3 && <span className="diff-badge">±{diff}</span>}
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="compare-column">
+              <h3 className="compare-column-title">{result2.name}</h3>
+              {result2.ranking.map((item, i) => {
+                const diff = getPositionDiff(item);
+                const isExtreme = i < 3 || i >= result2.ranking.length - 3;
+                return (
+                  <div 
+                    key={item} 
+                    className={`compare-item ${diff >= 5 ? 'divergent' : ''} ${isExtreme && diff >= 3 ? 'extreme-diff' : ''}`}
+                  >
+                    <span className="compare-number">{i + 1}</span>
+                    <span className="compare-text">{item}</span>
+                    {diff >= 3 && <span className="diff-badge">±{diff}</span>}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="action-group">
+            <button className="btn-primary" onClick={onRankSame}>
+              Rank This List
+            </button>
+            <button className="btn-secondary" onClick={() => copyToClipboard(compareUrl)}>
+              Copy Comparison Link
+            </button>
+          </div>
+        </div>
+      );
+    };
+
+    const TemplateCreated = ({ template, onShare }) => {
+      const templateUrl = `${window.location.origin}${window.location.pathname}#t/${encode(template)}`;
+
+      return (
+        <div className="view-container">
+          <div className="success-icon">✓</div>
+          <h1 className="main-title">Template Created</h1>
+          <p className="subtitle">{template.title}</p>
+          
+          <div className="url-display">
+            <code>{templateUrl.length > 50 ? templateUrl.slice(0, 50) + '...' : templateUrl}</code>
+          </div>
+
+          <div className="action-group">
+            <button className="btn-primary" onClick={() => onShare('rank')}>
+              Rank It Yourself
+            </button>
+            <button className="btn-secondary" onClick={() => copyToClipboard(templateUrl)}>
+              Copy Template Link
+            </button>
+          </div>
+        </div>
+      );
+    };
+
+    const ResultSubmitted = ({ template, result, compareWith, onAction }) => {
+      const similarity = compareWith ? calculateSimilarity(result.ranking, compareWith.ranking) : null;
+      const resultUrl = `${window.location.origin}${window.location.pathname}#r/${encode({ t: template, r: result })}`;
+
+      return (
+        <div className="view-container">
+          <div className="success-icon">✓</div>
+          <h1 className="main-title">Ranking Submitted</h1>
+          <p className="subtitle">{result.name}'s ranking for {template.title}</p>
+
+          {compareWith && (
+            <div className="auto-compare-prompt">
+              <p className="compare-tease">
+                You and <strong>{compareWith.name}</strong> are <strong>{similarity}% similar</strong>
+              </p>
+              <button className="btn-primary" onClick={() => onAction('compare')}>
+                See Full Comparison
+              </button>
+            </div>
+          )}
+
+          {!compareWith && (
+            <div className="action-group">
+              <button className="btn-primary" onClick={() => onAction('viewResult')}>
+                View Your Ranking
+              </button>
+            </div>
+          )}
+
+          <button className="btn-secondary" onClick={() => copyToClipboard(resultUrl)}>
+            Copy Link to Share
+          </button>
+        </div>
+      );
+    };
+
+    // Main App
+    function App() {
+      const [view, setView] = useState('create');
+      const [template, setTemplate] = useState(null);
+      const [result, setResult] = useState(null);
+      const [compareResult, setCompareResult] = useState(null);
+      const [originResult, setOriginResult] = useState(null);
+
+      useEffect(() => {
+        const hash = window.location.hash.slice(1);
+        if (!hash) return;
+
+        const [type, data] = hash.split('/');
+        const decoded = decode(data);
+        if (!decoded) return;
+
+        if (type === 't') {
+          setTemplate(decoded);
+          setView('rank');
+        } else if (type === 'r') {
+          setTemplate(decoded.t);
+          setResult(decoded.r);
+          setOriginResult(decoded.r);
+          setView('viewResult');
+        } else if (type === 'c') {
+          setTemplate(decoded.t);
+          setResult(decoded.r1);
+          setCompareResult(decoded.r2);
+          setView('compare');
+        }
+      }, []);
+
+      const handleTemplateCreated = (t) => {
+        setTemplate(t);
+        setView('templateCreated');
+        window.location.hash = `t/${encode(t)}`;
+      };
+
+      const handleRankComplete = (r) => {
+        setResult(r);
+        setView('resultSubmitted');
+      };
+
+      const handleResultAction = (action) => {
+        if (action === 'compare') {
+          setCompareResult(originResult);
+          setView('compare');
+          window.location.hash = `c/${encode({ t: template, r1: result, r2: originResult })}`;
+        } else if (action === 'viewResult') {
+          setView('viewResult');
+          window.location.hash = `r/${encode({ t: template, r: result })}`;
+        }
+      };
+
+      const handleRankSame = () => {
+        setOriginResult(result || originResult);
+        setResult(null);
+        setCompareResult(null);
+        setView('rank');
+        window.location.hash = `t/${encode(template)}`;
+      };
+
+      const handleShare = (type) => {
+        if (type === 'rank') {
+          setView('rank');
+        }
+      };
+
+      return (
+        <div className="app">
+          {view === 'create' && <CreateTemplate onComplete={handleTemplateCreated} />}
+          {view === 'templateCreated' && <TemplateCreated template={template} onShare={handleShare} />}
+          {view === 'rank' && <RankItems template={template} onComplete={handleRankComplete} />}
+          {view === 'resultSubmitted' && <ResultSubmitted template={template} result={result} compareWith={originResult} onAction={handleResultAction} />}
+          {view === 'viewResult' && <ViewResult template={template} result={result} onRankSame={handleRankSame} />}
+          {view === 'compare' && <CompareResults template={template} result1={result} result2={compareResult} onRankSame={handleRankSame} />}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+
+</body>
+</html>
